@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CN Chrome — A faster, lighter Chromium browser</title>
+<meta name="description" content="CN Chrome is a fast, private browser built on the Chromium engine. Free download for macOS, Windows and Linux." />
+<link rel="icon" type="image/png" href="https://icons.iconarchive.com/icons/franksouza183/fs/512/Apps-google-chrome-icon.png" />
+<style>
+  /* ---------- Design tokens ---------- */
+  :root {
+    --bg:        #07070c;
+    --surface:   #101018;
+    --surface-2: #16161f;
+    --border:    rgba(255,255,255,.08);
+    --text:      #f4f4f7;
+    --muted:     #8d8da3;
+    --accent:    #6d5efc;
+    --accent-2:  #b06efc;
+    --radius:    16px;
+    --max:       1120px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Ambient glow */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -30vh; left: 50%;
+    width: 900px; height: 900px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(109,94,252,.28), transparent 62%);
+    filter: blur(30px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- Nav ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(7,7,12,.7);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s;
+  }
+  header.scrolled { border-bottom-color: var(--border); }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 650;
+    font-size: 17px;
+    letter-spacing: -.02em;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .logo img {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    object-fit: contain;
+    /* Slight glow to blend with the dark theme */
+    filter: drop-shadow(0 2px 8px rgba(109,94,252,.35));
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14.5px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-radius: 999px;
+    font-weight: 560;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform .18s, box-shadow .25s, background .2s, border-color .2s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(.975); }
+
+  .btn-primary {
+    padding: 15px 30px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 10px 32px -10px rgba(109,94,252,.85);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 16px 42px -10px rgba(109,94,252,1);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    padding: 15px 26px;
+    color: var(--text);
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+  .btn-ghost:hover { background: #1d1d28; border-color: rgba(255,255,255,.16); }
+
+  .btn-sm { padding: 10px 20px; font-size: 14px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 92px 0 78px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 15px 7px 11px;
+    border-radius: 999px;
+    background: rgba(109,94,252,.1);
+    border: 1px solid rgba(109,94,252,.3);
+    color: #c3bcff;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 26px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,.18);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50%     { opacity: .45; }
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 6.4vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: -.035em;
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+  h1 .grad {
+    background: linear-gradient(115deg, #8b7dff 10%, #cf9dff 55%, #6ec8ff 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sub {
+    max-width: 600px;
+    margin: 0 auto 38px;
+    color: var(--muted);
+    font-size: clamp(1rem, 2vw, 1.13rem);
+  }
+  .sub strong { color: #c3bcff; font-weight: 600; }
+
+  .cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .meta {
+    font-size: 13px;
+    color: #63637a;
+  }
+
+  /* ---------- Browser mockup ---------- */
+  .mockup {
+    max-width: 880px;
+    margin: 74px auto 0;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: 0 50px 110px -40px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.03) inset;
+    overflow: hidden;
+    animation: rise .9s cubic-bezier(.2,.7,.3,1) both;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(36px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .mock-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tl { width: 11px; height: 11px; border-radius: 50%; }
+  .tl.r { background: #ff5f57; }
+  .tl.y { background: #febc2e; }
+  .tl.g { background: #28c840; }
+
+  .url {
+    flex: 1;
+    margin-left: 12px;
+    height: 26px;
+    border-radius: 7px;
+    background: rgba(255,255,255,.05);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 12px;
+    color: #6b6b82;
+    gap: 8px;
+  }
+
+  .url img {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    object-fit: contain;
+    opacity: .9;
+  }
+
+  .mock-body {
+    height: 300px;
+    background:
+      radial-gradient(600px 220px at 50% -10%, rgba(109,94,252,.3), transparent 70%),
+      linear-gradient(180deg, #0d0d15, #0a0a11);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .speed {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+  .speed .num {
+    font-size: clamp(2.8rem, 7vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -.04em;
+    background: linear-gradient(135deg, #a99bff, #6ec8ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .speed .lbl {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .engine-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(110,200,255,.08);
+    border: 1px solid rgba(110,200,255,.25);
+    font-size: 12px;
+    color: #9dd3ff;
+    letter-spacing: .02em;
+  }
+  .engine-tag svg { width: 13px; height: 13px; stroke: #6ec8ff; }
+
+  /* ---------- Features ---------- */
+  .features {
+    padding: 110px 0 40px;
+  }
+  .sec-head {
+    text-align: center;
+    margin-bottom: 58px;
+  }
+  .sec-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    letter-spacing: -.03em;
+    font-weight: 650;
+    margin-bottom: 12px;
+  }
+  .sec-head p { color: var(--muted); max-width: 520px; margin: 0 auto; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--surface), #0c0c14);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 30px 26px;
+    transition: transform .25s, border-color .25s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(109,94,252,.42);
+  }
+
+  .icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(109,94,252,.12);
+    border: 1px solid rgba(109,94,252,.25);
+    margin-bottom: 18px;
+  }
+  .icon svg { width: 21px; height: 21px; stroke: #a99bff; }
+
+  .card h3 {
+    font-size: 16.5px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    margin-bottom: 8px;
+  }
+  .card p { color: var(--muted); font-size: 14.5px; }
+
+  /* ---------- Chromium strip ---------- */
+  .strip {
+    margin-top: 26px;
+    padding: 22px 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(109,94,252,.06), rgba(110,200,255,.04));
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+  .strip svg {
+    width: 30px; height: 30px;
+    stroke: #a99bff;
+    flex-shrink: 0;
+  }
+  .strip p {
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0;
+  }
+  .strip strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Final CTA ---------- */
+  .final {
+    margin: 110px 0 90px;
+    text-align: center;
+    padding: 66px 30px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background:
+      radial-gradient(500px 200px at 50% 0%, rgba(109,94,252,.22), transparent 70%),
+      var(--surface);
+  }
+  .final h2 {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    letter-spacing: -.03em;
+    font-weight: 650;
+    margin-bottom: 12px;
+  }
+  .final p { color: var(--muted); margin-bottom: 30px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 34px 0;
+    font-size: 13.5px;
+    color: #5f5f75;
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .foot-links { display: flex; gap: 22px; }
+  .foot a { color: #5f5f75; text-decoration: none; transition: color .2s; }
+  .foot a:hover { color: var(--text); }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .hero { padding: 62px 0 56px; }
+    .mock-body { height: 240px; }
+    .cta .btn { width: 100%; }
+    .final { margin: 80px 0 60px; padding: 48px 22px; }
+    .logo img { width: 26px; height: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="header">
+  <div class="wrap nav">
+    <a href="#" class="logo">
+      <img
+        src="https://icons.iconarchive.com/icons/franksouza183/fs/512/Apps-google-chrome-icon.png"
+        alt="CN Chrome logo"
+        width="30" height="30"
+        loading="eager"
+      />
+      CN Chrome
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Support</a></li>
+    </ul>
+
+    <a href="#download" class="btn btn-ghost btn-sm">Get CN Chrome</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero wrap">
+    <div class="badge"><span class="dot"></span> CN Chrome 4.2 — now available</div>
+
+    <h1>Browse faster.<br><span class="grad">Live lighter.</span></h1>
+
+    <p class="sub">
+      CN Chrome is a privacy-first browser built on the <strong>Chromium engine</strong>.
+      Twice the speed, half the memory, zero trackers — with full compatibility for every
+      Chrome extension and website you already use.
+    </p>
+
+    <div class="cta" id="download">
+      <a href="#" class="btn btn-primary" id="mainDownload">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download for <span id="osName">your device</span>
+      </a>
+      <a href="#" class="btn btn-ghost">Other platforms</a>
+    </div>
+
+    <p class="meta">Free forever · 68 MB · Chromium-based · macOS 11+ · Windows 10+ · Linux</p>
+
+    <!-- Browser window mockup -->
+    <div class="mockup" aria-hidden="true">
+      <div class="mock-bar">
+        <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+        <div class="url">
+          <img
+            src="https://icons.iconarchive.com/icons/franksouza183/fs/512/Apps-google-chrome-icon.png"
+            alt=""
+            width="14" height="14"
+          />
+          cnchrome://speed-test
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="speed">
+          <div class="num">2.4×</div>
+          <div class="lbl">Faster page loads</div>
+        </div>
+        <div class="engine-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <path d="M2 12h20"/>
+          </svg>
+          Powered by Chromium
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="features wrap" id="features">
+    <div class="sec-head reveal">
+      <h2>Everything you need. Nothing you don't.</h2>
+      <p>Built on Chromium for full web compatibility — refined for speed, privacy and a web that feels calm again.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <h3>Blazing fast</h3>
+        <p>A Chromium core tuned for speed, plus instant page pre-loading that makes every click feel immediate.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3>Private by default</h3>
+        <p>Trackers, ads and fingerprinting are blocked out of the box. No settings to hunt for.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3>Light on memory</h3>
+        <p>Hundreds of tabs open without your laptop fans spinning up. Sleep mode does the work.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16v12H4z"/><path d="M2 20h20"/>
+            <path d="M9 8h6"/><path d="M9 12h4"/>
+          </svg>
+        </div>
+        <h3>Sync everywhere</h3>
+        <p>Tabs, bookmarks and passwords stay in sync — end-to-end encrypted, always.</p>
+      </div>
+    </div>
+
+    <!-- Chromium compatibility strip -->
+    <div class="strip reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <p>
+        <strong>Full Chromium compatibility.</strong>
+        Install any Chrome extension and load every site exactly as intended — nothing breaks, nothing is left behind.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="wrap">
+    <div class="final reveal">
+      <h2>Ready to switch?</h2>
+      <p>Import your bookmarks and Chrome extensions in one click. It takes about 30 seconds.</p>
+      <a href="#" class="btn btn-primary" id="bottomDownload">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download CN Chrome free
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot">
+    <span>© 2025 CN Chrome. Built on the open-source Chromium engine.</span>
+    <nav class="foot-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Release notes</a>
+      <a href="#">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  /* ---------- Detect OS for the download button ---------- */
+  (function () {
+    const ua = navigator.userAgent;
+    let os = 'your device';
+    let mobile = false;
+
+    if (/Android/i.test(ua))                     { os = 'Android';  mobile = true; }
+    else if (/iPhone|iPad|iPod/i.test(ua))       { os = 'iOS';      mobile = true; }
+    else if (/Mac OS X|Macintosh/i.test(ua))     { os = 'macOS'; }
+    else if (/Windows/i.test(ua))                { os = 'Windows'; }
+    else if (/Linux|X11|CrOS/i.test(ua))         { os = 'Linux'; }
+
+    document.getElementById('osName').textContent = os;
+
+    // Point the buttons at the right installer
+    const files = {
+      macOS:   'cnchrome-4.2.dmg',
+      Windows: 'cnchrome-4.2-setup.exe',
+      Linux:   'cnchrome-4.2.AppImage',
+      Android: 'cnchrome-4.2.apk',
+      iOS:     'https://apps.apple.com/'
+    };
+    const href = files[os] || '#all-platforms';
+    document.getElementById('mainDownload').href   = href;
+    document.getElementById('bottomDownload').href = href;
+
+    // Mobile visitors get a friendlier label
+    if (mobile) {
+      document.querySelector('#mainDownload').lastChild.textContent = ' Get CN Chrome';
+    }
+  })();
+
+  /* ---------- Header border on scroll ---------- */
+  const header = document.getElementById('header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ---------- Reveal on scroll ---------- */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i * 70) + 'ms';
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
