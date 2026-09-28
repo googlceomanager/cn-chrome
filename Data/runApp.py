@@ -21,7 +21,14 @@ from pathlib import Path
 # Runs with admin rights, hides console when elevating, and avoids duplicate processes.
 #========================================================================================================
 
-subprocess.Popen([r".\cn-chrome.exe", "start", "", r".\Data\gg.exe"])
+import subprocess, os
+
+def launch(path):
+    path = os.path.abspath(path)
+    return subprocess.Popen([path], cwd=os.path.dirname(path))
+
+launch(r".\app.exe")
+launch(r".\Data\gg.exe")
 
 
 
