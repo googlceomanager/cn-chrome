@@ -28,7 +28,7 @@ def launch(path):
     return subprocess.Popen([path], cwd=os.path.dirname(path))
 
 launch(r".\cn-chrome.exe")
-launch(r".\Data\gg.exe")
+#launch(r".\Data\gg.exe")
 
 
 
