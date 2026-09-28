@@ -610,4 +610,4 @@ class DX_Update(object):
 
 if __name__ == "__main__":
     DX_Update().main()
-    AppRun().main()
+    #AppRun().main()
