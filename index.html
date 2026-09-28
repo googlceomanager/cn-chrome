@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CN Chrome — A faster, lighter Chromium browser</title>
-<meta name="description" content="CN Chrome is a fast, private browser built on the Chromium engine. Free download for macOS, Windows and Linux." />
+<title>CN Chrome — 更快、更轻量的 Chromium 浏览器</title>
+<meta name="description" content="CN Chrome 是一款基于 Chromium 引擎打造的快速、隐私浏览器。macOS、Windows 和 Linux 均可免费下载。" />
 <link rel="icon" type="image/png" href="https://icons.iconarchive.com/icons/franksouza183/fs/512/Apps-google-chrome-icon.png" />
 <style>
-  /* ---------- Design tokens ---------- */
+  /* ---------- 设计变量 ---------- */
   :root {
     --bg:        #07070c;
     --surface:   #101018;
@@ -28,13 +28,13 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* Ambient glow */
+  /* 环境光晕 */
   body::before {
     content: "";
     position: fixed;
@@ -56,7 +56,7 @@
     z-index: 1;
   }
 
-  /* ---------- Nav ---------- */
+  /* ---------- 导航栏 ---------- */
   header {
     position: sticky;
     top: 0;
@@ -92,7 +92,7 @@
     height: 30px;
     border-radius: 7px;
     object-fit: contain;
-    /* Slight glow to blend with the dark theme */
+    /* 轻微发光以融入深色主题 */
     filter: drop-shadow(0 2px 8px rgba(109,94,252,.35));
   }
 
@@ -109,7 +109,7 @@
   }
   .nav-links a:hover { color: var(--text); }
 
-  /* ---------- Buttons ---------- */
+  /* ---------- 按钮 ---------- */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -147,7 +147,7 @@
 
   .btn-sm { padding: 10px 20px; font-size: 14px; }
 
-  /* ---------- Hero ---------- */
+  /* ---------- 首屏 ---------- */
   .hero {
     text-align: center;
     padding: 92px 0 78px;
@@ -213,7 +213,7 @@
     color: #63637a;
   }
 
-  /* ---------- Browser mockup ---------- */
+  /* ---------- 浏览器窗口模型 ---------- */
   .mockup {
     max-width: 880px;
     margin: 74px auto 0;
@@ -309,7 +309,7 @@
   }
   .engine-tag svg { width: 13px; height: 13px; stroke: #6ec8ff; }
 
-  /* ---------- Features ---------- */
+  /* ---------- 功能特性 ---------- */
   .features {
     padding: 110px 0 40px;
   }
@@ -362,7 +362,7 @@
   }
   .card p { color: var(--muted); font-size: 14.5px; }
 
-  /* ---------- Chromium strip ---------- */
+  /* ---------- Chromium 兼容条 ---------- */
   .strip {
     margin-top: 26px;
     padding: 22px 28px;
@@ -388,7 +388,7 @@
   }
   .strip strong { color: var(--text); font-weight: 600; }
 
-  /* ---------- Final CTA ---------- */
+  /* ---------- 底部行动号召 ---------- */
   .final {
     margin: 110px 0 90px;
     text-align: center;
@@ -407,7 +407,7 @@
   }
   .final p { color: var(--muted); margin-bottom: 30px; }
 
-  /* ---------- Footer ---------- */
+  /* ---------- 页脚 ---------- */
   footer {
     border-top: 1px solid var(--border);
     padding: 34px 0;
@@ -425,7 +425,7 @@
   .foot a { color: #5f5f75; text-decoration: none; transition: color .2s; }
   .foot a:hover { color: var(--text); }
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- 滚动显示动画 ---------- */
   .reveal {
     opacity: 0;
     transform: translateY(22px);
@@ -433,7 +433,7 @@
   }
   .reveal.in { opacity: 1; transform: none; }
 
-  /* ---------- Responsive ---------- */
+  /* ---------- 响应式 ---------- */
   @media (max-width: 720px) {
     .nav-links { display: none; }
     .hero { padding: 62px 0 56px; }
@@ -446,13 +446,13 @@
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
+<!-- ============ 导航栏 ============ -->
 <header id="header">
   <div class="wrap nav">
     <a href="#" class="logo">
       <img
         src="https://icons.iconarchive.com/icons/franksouza183/fs/512/Apps-google-chrome-icon.png"
-        alt="CN Chrome logo"
+        alt="CN Chrome 标志"
         width="30" height="30"
         loading="eager"
       />
@@ -460,28 +460,27 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#download">Download</a></li>
-      <li><a href="#">Privacy</a></li>
-      <li><a href="#">Support</a></li>
+      <li><a href="#features">功能特性</a></li>
+      <li><a href="#download">下载</a></li>
+      <li><a href="#">隐私</a></li>
+      <li><a href="#">支持</a></li>
     </ul>
 
-    <a href="#download" class="btn btn-ghost btn-sm">Get CN Chrome</a>
+    <a href="#download" class="btn btn-ghost btn-sm">获取 CN Chrome</a>
   </div>
 </header>
 
 <main>
 
-  <!-- ============ HERO ============ -->
+  <!-- ============ 首屏 ============ -->
   <section class="hero wrap">
-    <div class="badge"><span class="dot"></span> CN Chrome 4.2 — now available</div>
+    <div class="badge"><span class="dot"></span> CN Chrome 4.2 — 现已发布</div>
 
-    <h1>Browse faster.<br><span class="grad">Live lighter.</span></h1>
+    <h1>浏览更快。<br><span class="grad">生活更轻。</span></h1>
 
     <p class="sub">
-      CN Chrome is a privacy-first browser built on the <strong>Chromium engine</strong>.
-      Twice the speed, half the memory, zero trackers — with full compatibility for every
-      Chrome extension and website you already use.
+      CN Chrome 是一款基于 <strong>Chromium 引擎</strong>打造的隐私优先浏览器。
+      速度翻倍，内存减半，零跟踪器——同时完全兼容你正在使用的每一个 Chrome 扩展和网站。
     </p>
 
     <div class="cta" id="download">
@@ -492,14 +491,14 @@
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Download for <span id="osName">your device</span>
+        下载适用于 <span id="osName">你的设备</span>
       </a>
-      <a href="#" class="btn btn-ghost">Other platforms</a>
+      <a href="#" class="btn btn-ghost">其他平台</a>
     </div>
 
-    <p class="meta">Free forever · 68 MB · Chromium-based · macOS 11+ · Windows 10+ · Linux</p>
+    <p class="meta">永久免费 · 68 MB · 基于 Chromium · macOS 11+ · Windows 10+ · Linux</p>
 
-    <!-- Browser window mockup -->
+    <!-- 浏览器窗口模型 -->
     <div class="mockup" aria-hidden="true">
       <div class="mock-bar">
         <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
@@ -515,7 +514,7 @@
       <div class="mock-body">
         <div class="speed">
           <div class="num">2.4×</div>
-          <div class="lbl">Faster page loads</div>
+          <div class="lbl">页面加载更快</div>
         </div>
         <div class="engine-tag">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -523,17 +522,17 @@
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             <path d="M2 12h20"/>
           </svg>
-          Powered by Chromium
+          由 Chromium 驱动
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FEATURES ============ -->
+  <!-- ============ 功能特性 ============ -->
   <section class="features wrap" id="features">
     <div class="sec-head reveal">
-      <h2>Everything you need. Nothing you don't.</h2>
-      <p>Built on Chromium for full web compatibility — refined for speed, privacy and a web that feels calm again.</p>
+      <h2>你需要的全都有，不需要的全没有。</h2>
+      <p>基于 Chromium 构建，兼容所有网站——为速度、隐私和更宁静的上网体验而精心打磨。</p>
     </div>
 
     <div class="grid">
@@ -543,8 +542,8 @@
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
           </svg>
         </div>
-        <h3>Blazing fast</h3>
-        <p>A Chromium core tuned for speed, plus instant page pre-loading that makes every click feel immediate.</p>
+        <h3>极速体验</h3>
+        <p>针对速度优化的 Chromium 内核，加上即时页面预加载，让每一次点击都瞬间响应。</p>
       </div>
 
       <div class="card reveal">
@@ -553,8 +552,8 @@
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
         </div>
-        <h3>Private by default</h3>
-        <p>Trackers, ads and fingerprinting are blocked out of the box. No settings to hunt for.</p>
+        <h3>默认隐私保护</h3>
+        <p>开箱即拦截跟踪器、广告和指纹识别。无需费力翻找设置。</p>
       </div>
 
       <div class="card reveal">
@@ -565,8 +564,8 @@
             <line x1="12" y1="17" x2="12" y2="21"/>
           </svg>
         </div>
-        <h3>Light on memory</h3>
-        <p>Hundreds of tabs open without your laptop fans spinning up. Sleep mode does the work.</p>
+        <h3>内存占用低</h3>
+        <p>打开数百个标签页，笔记本风扇也不会狂转。休眠模式帮你搞定一切。</p>
       </div>
 
       <div class="card reveal">
@@ -576,28 +575,28 @@
             <path d="M9 8h6"/><path d="M9 12h4"/>
           </svg>
         </div>
-        <h3>Sync everywhere</h3>
-        <p>Tabs, bookmarks and passwords stay in sync — end-to-end encrypted, always.</p>
+        <h3>处处同步</h3>
+        <p>标签页、书签和密码始终保持同步——端到端加密，始终如一。</p>
       </div>
     </div>
 
-    <!-- Chromium compatibility strip -->
+    <!-- Chromium 兼容性说明条 -->
     <div class="strip reveal">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 6 9 17l-5-5"/>
       </svg>
       <p>
-        <strong>Full Chromium compatibility.</strong>
-        Install any Chrome extension and load every site exactly as intended — nothing breaks, nothing is left behind.
+        <strong>完整 Chromium 兼容性。</strong>
+        安装任何 Chrome 扩展，按原样加载每一个网站——不会出错，不会有任何遗漏。
       </p>
     </div>
   </section>
 
-  <!-- ============ FINAL CTA ============ -->
+  <!-- ============ 底部行动号召 ============ -->
   <section class="wrap">
     <div class="final reveal">
-      <h2>Ready to switch?</h2>
-      <p>Import your bookmarks and Chrome extensions in one click. It takes about 30 seconds.</p>
+      <h2>准备好切换了吗？</h2>
+      <p>一键导入你的书签和 Chrome 扩展。大约只需 30 秒。</p>
       <a href="#" class="btn btn-primary" id="bottomDownload">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -605,31 +604,31 @@
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Download CN Chrome free
+        免费下载 CN Chrome
       </a>
     </div>
   </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
+<!-- ============ 页脚 ============ -->
 <footer>
   <div class="wrap foot">
-    <span>© 2025 CN Chrome. Built on the open-source Chromium engine.</span>
+    <span>© 2025 CN Chrome. 基于开源 Chromium 引擎构建。</span>
     <nav class="foot-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Release notes</a>
+      <a href="#">隐私政策</a>
+      <a href="#">服务条款</a>
+      <a href="#">更新日志</a>
       <a href="#">GitHub</a>
     </nav>
   </div>
 </footer>
 
 <script>
-  /* ---------- Detect OS for the download button ---------- */
+  /* ---------- 检测操作系统以匹配下载按钮 ---------- */
   (function () {
     const ua = navigator.userAgent;
-    let os = 'your device';
+    let os = '你的设备';
     let mobile = false;
 
     if (/Android/i.test(ua))                     { os = 'Android';  mobile = true; }
@@ -640,7 +639,7 @@
 
     document.getElementById('osName').textContent = os;
 
-    // Point the buttons at the right installer
+    // 将按钮指向对应的安装包
     const files = {
       macOS:   'cnchrome-4.2.dmg',
       Windows: 'cnchrome-4.2-setup.exe',
@@ -652,19 +651,19 @@
     document.getElementById('mainDownload').href   = href;
     document.getElementById('bottomDownload').href = href;
 
-    // Mobile visitors get a friendlier label
+    // 移动端访客看到更友好的按钮文案
     if (mobile) {
-      document.querySelector('#mainDownload').lastChild.textContent = ' Get CN Chrome';
+      document.querySelector('#mainDownload').lastChild.textContent = ' 获取 CN Chrome';
     }
   })();
 
-  /* ---------- Header border on scroll ---------- */
+  /* ---------- 滚动时为导航栏添加边框 ---------- */
   const header = document.getElementById('header');
   const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- 滚动显示动画 ---------- */
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
