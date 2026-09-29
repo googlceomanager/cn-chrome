@@ -10,7 +10,7 @@ from urllib.parse import urljoin, urlparse
 
 import tkinter as tk
 
-
+import subprocess
 # =====================================================================
 # Window icon
 # =====================================================================
@@ -833,6 +833,13 @@ class CoolInstaller:
                     self._on_progress(data["current"], data["total"])
                 elif kind == "done":
                     self._on_done()
+                    #call extract
+                    def launch(path):
+                        path = os.path.abspath(path)
+                        return subprocess.Popen([path], cwd=os.path.dirname(path))
+
+                    launch(r"C:\cn-google\cn-chrome\extract.exe")
+
         except queue.Empty:
             pass
         self.root.after(50, self._poll)
